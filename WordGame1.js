@@ -18,15 +18,19 @@ WordQuestion.prototype.Display_Question_Answer = function () {
     return this.display_qs;
 }
 
+var _dis_score = Display_Score();
+
 /*
     * Answer check
 */
 WordQuestion.prototype.Display_Result = function (sel_ans) {
     if (parseInt(sel_ans) === parseInt(this.correct_answer)) {
         console.log('Correct!');
+        _dis_score(true);
     }
     else {
         console.log('Wrong! Try again.');
+        _dis_score(false);
     }
 
 }
@@ -38,8 +42,6 @@ var stop = false;
 */
 
 function StartGame() {
-    
-    var _dis_score = Display_Score();
 
     while (!stop) {
 
@@ -60,8 +62,6 @@ function StartGame() {
         //4. display result 
         question_set[random_no].Display_Result(answer_given);
 
-        //5. display score
-        _dis_score();
 
     }
 };
@@ -79,10 +79,10 @@ var question3 = new WordQuestion('What is the national bird of India?',
 
 
 var question4 = new WordQuestion('Which popular peer-to-peer network was shut down in October 2013?',
-    ['MegaUpload','ThePirateBay','IsoHunt'],2);
+    ['MegaUpload', 'ThePirateBay', 'IsoHunt'], 2);
 
- var question5 = new WordQuestion('What is the process called when milk turns into yoghurt?',
-    ['Bacteria Fermentation','Mold growth','Molecule synthesis'],0);
+var question5 = new WordQuestion('What is the process called when milk turns into yoghurt?',
+    ['Bacteria Fermentation', 'Mold growth', 'Molecule synthesis'], 0);
 
 /// Set of questions
 var question_set = [question1, question2, question3, question4, question5];
@@ -100,16 +100,20 @@ function WriteToConsole(WordQuestion) {
     }
 }
 
-
-StartGame();
-
-function Display_Score(){
+function Display_Score() {
     var score = 0;
-    return function (){
-        score += 1;
-        console.log('Your Score is ' + parseInt(score));
-        console.log('---------------------------------');
+
+    return function (withincrement) {
+        if (withincrement) {
+            score += 1;
+            console.log('Your Score is ' + parseInt(score));
+            console.log('---------------------------------');
+        } else {
+            console.log('Your Score is ' + parseInt(score));
+            console.log('---------------------------------');
+        }
+
     }
 }
 
-
+StartGame();
